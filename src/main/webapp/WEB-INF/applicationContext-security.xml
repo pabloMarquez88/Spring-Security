@@ -14,6 +14,7 @@
 	<http  entry-point-ref="tenantAuthenticationEntryPoint">
 		<intercept-url pattern="/hola**"
 			access="ROLE_GENERAL_USER, ROLE_SPECIAL_USER" />
+		
 		<custom-filter position="CONCURRENT_SESSION_FILTER" ref="concurrencyFilter" />
 		<session-management session-authentication-strategy-ref="sas"/>
 		<custom-filter position="FORM_LOGIN_FILTER" ref="usernamePasswordAuthenticationFilter" />
