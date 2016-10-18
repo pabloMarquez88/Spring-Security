@@ -1,89 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<bean id="nuestroProveedor" name="nuestroProveedor" class="ar.CustomAuthenticationProvider"></bean>
-	
-<!-- 	<bean id="sessionRegistry" name="sessionRegistry" class="ar.PatagoniaSessionRegistry"></bean> -->
-	
-<!-- 	<bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter"> -->
-<!--   		<property name="sessionRegistry" ref="sessionRegistry" /> -->
-<!--   		<property name="expiredUrl" value="/expired.html" /> -->
-<!-- 	</bean> -->
 
+	<!-- Mi propia implementacion de la session registry -->
+	<bean id="sessionRegistry" name="sessionRegistry" class="ar.PatagoniaSessionRegistry"></bean>
 
-<!-- 	<bean id="sas" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy"> -->
-<!-- 	    <constructor-arg name="sessionRegistry" ref="sessionRegistry" /> -->
-<!-- 	    <property name="maximumSessions" value="1" /> -->
-<!-- 	    <property name="exceptionIfMaximumExceeded" value="true"/> -->
-<!-- 	</bean> -->
-	
-	
-	
-<!-- 	defines the login page to be used to authenticate a user, when a request  
+	<!-- El filtro para la concurrencia -->
+	<bean id="concurrencyFilter"
+		class="org.springframework.security.web.session.ConcurrentSessionFilter">
+		<property name="sessionRegistry" ref="sessionRegistry" />
+		<property name="expiredUrl" value="/expired.html" />
+	</bean>
+
+	<!-- La estrategia de manejo de session -->
+
+	<bean id="sas"
+		class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
+		<constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+		<property name="maximumSessions" value="1" />
+		<property name="exceptionIfMaximumExceeded" value="true" />
+	</bean>
+
+	<!-- defines the login page to be used to authenticate a user, when a request 
 		is not authorized to access a Web resource -->
-<!-- 	<bean id="tenantAuthenticationEntryPoint" -->
-<!-- 		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint"> -->
-<!-- 		<property name="LoginFormUrl" value="/login.html" /> -->
-<!-- 	</bean> -->
+	<bean id="tenantAuthenticationEntryPoint"
+		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<property name="LoginFormUrl" value="/login.jsp" />
+	</bean>
 
-<!-- 	<bean id="authenticationFailureHandler" -->
-<!-- 		class="com.tsystems.wlidp.security.WlidpAuthenticationFailureHandler"> -->
-<!-- 		<property name="errorPage" value="/errorpage.jsp" /> -->
-<!-- 	</bean> -->
-
-<!-- 	 The authentication filter declarations --> 
-
-<!-- 	 the UsernamePasswordAuthenticationFilter needs special authenticationDetailsSource  -->
-<!-- 		to grap the tenantId from the Http request --> 
-<!-- 	<bean id="usernamePasswordAuthenticationFilter" -->
-<!-- 		class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter"> -->
-<!-- 		<property name="sessionAuthenticationStrategy" ref="sas" /> -->
-<!-- 		<property name="authenticationManager" ref="authenticationManager" /> -->
-<!-- 		<property name="authenticationDetailsSource" ref="webAuthenticationDetailsSource" /> -->
-<!-- 		<property name="authenticationFailureHandler" ref="authenticationFailureHandler" /> -->
-<!-- 	</bean> -->
-
-<!-- 	 The JanRain authentication filter is a new class of the WL-IdP project. -->
-<!-- 	<bean id="janrainAuthenticationFilter" -->
-<!-- 		class="com.tsystems.wlidp.security.janrain.JanrainAuthenticationFilter"> -->
-<!-- 		<property name="sessionAuthenticationStrategy" ref="sas" /> -->
-<!-- 		<property name="authenticationManager" ref="authenticationManager" /> -->
-<!-- 		<property name="filterProcessesUrl" value="/j_spring_janrain_security_check" /> -->
-<!-- 		<property name="authenticationDetailsSource" ref="webAuthenticationDetailsSource" /> -->
-<!-- 		<property name="janrainService" ref="janrainService" /> -->
-<!-- 		<property name="authenticationFailureHandler" ref="authenticationFailureHandler" /> -->
-<!-- 	</bean> -->
-
-<!-- 	<bean		class="org.springframework.security.web.authentication.WebAuthenticationDetailsSource"		id="webAuthenticationDetailsSource"> -->
-<!-- 		<property name="clazz" 			value="com.tsystems.wlidp.security.WlidpAuthenticationDetails" /> -->
-<!-- 	</bean> -->
-
-<!-- 	The Spring authentication manager has to authentication methods: username-password  -->
-<!-- 		and JanRain 3rd party --> 
-
-<!-- 	<authentication-manager alias="authenticationManager"> -->
-<!-- 		<authentication-provider ref="tenantAuthProvider" /> -->
-<!-- 		<authentication-provider ref="janrainAuthenticationProvider" /> -->
-<!-- 	</authentication-manager> -->
-
-<!-- 	<bean class="com.tsystems.wlidp.security.TenantAuthenticationProvider" -->
-<!-- 		id="tenantAuthProvider"> -->
-<!-- 		<constructor-arg ref="tenantAuthenticator" /> -->
-<!-- 		<constructor-arg ref="tenantAuthoritiesPopulator" /> -->
-<!-- 		<property name="userDetailsContextMapper" ref="userContextMapper" /> -->
-<!-- 	</bean> -->
-
-<!-- 	<bean -->
-<!-- 		class="com.tsystems.wlidp.security.janrain.JanrainAuthenticationProvider" -->
-<!-- 		id="janrainAuthenticationProvider"> -->
-<!-- 		<constructor-arg ref="tenantAuthoritiesPopulator" /> -->
-<!-- 		<constructor-arg name="janrainService" ref="janrainService" /> -->
-<!-- 		<constructor-arg ref="userService" /> -->
-<!-- 	</bean> -->
-
-	<!-- sub declarations used to create the two authentication providers -->
+	<!-- the UsernamePasswordAuthenticationFilter needs special authenticationDetailsSource -->
+	<bean id="usernamePasswordAuthenticationFilter"
+		class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+		<property name="sessionAuthenticationStrategy" ref="sas" />
+		<property name="authenticationManager" ref="proveedorAutenticacion" />
+	</bean>
 
 </beans>
