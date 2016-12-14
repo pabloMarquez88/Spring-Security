@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -33,12 +34,16 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		beanSession.setPassword(password);
 		beanSession.setUsuario(name);
 		System.out.println("DESPUES DE SETEAR DATOS " + beanSession.getPassword() + " " + beanSession.getUsuario());
-		List<GrantedAuthority> grantedAuths = new ArrayList<>();
-		Autority as = new Autority();
-		as.setRol("ROLE_SPECIAL_USER");
-		grantedAuths.add(as);
-		Authentication auth = new UsernamePasswordAuthenticationToken(name, password, grantedAuths);
-		return auth;
+		if (name.equals("PEPE") && (password.equals("PEPE")) || (name.equals("PEPA") && password.equals("PEPA"))) {
+			List<GrantedAuthority> grantedAuths = new ArrayList<>();
+			Autority as = new Autority();
+			as.setRol("ROLE_SPECIAL_USER");
+			grantedAuths.add(as);
+			Authentication auth = new UsernamePasswordAuthenticationToken(name, password, grantedAuths);
+			return auth;
+		} else {
+			throw new BadCredentialsException("USUARIOS VALIDOS PEPE/PEPE O PEPA/PEPA");
+		}
 
 	}
 
