@@ -14,7 +14,8 @@
 	<bean id="nuestroProveedor" name="nuestroProveedor" class="ar.CustomAuthenticationProvider"></bean>
 
 	<!-- Mi propia implementacion de la session registry -->
-	<bean id="sessionRegistry" name="sessionRegistry" class="ar.PatagoniaSessionRegistry"></bean>
+<!-- 	<bean id="sessionRegistry" name="sessionRegistry" class="ar.PatagoniaSessionRegistry"></bean> -->
+<bean id="sessionRegistry" name="sessionRegistry" class="secu.DistributableSessionRegistryImpl" init-method="init" destroy-method="destroy"></bean>
 
 	<!-- El filtro para la concurrencia -->
 	<bean id="concurrencyFilter"
@@ -26,7 +27,7 @@
 	<!-- La estrategia de manejo de session -->
 
 	<bean id="sas"
-		class="ar.ConcurrentSessionControlStrategy">
+		class="ar.ConcurrentSessionControlStrategy" >
 		<constructor-arg name="sessionRegistry" ref="sessionRegistry" />
 		<property name="maximumSessions" value="1" />
 		<property name="exceptionIfMaximumExceeded" value="true" />
@@ -44,6 +45,12 @@
 		class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
 		<property name="sessionAuthenticationStrategy" ref="sas" />
 		<property name="authenticationManager" ref="proveedorAutenticacion" />
+		<property name="authenticationSuccessHandler" ref="authenticationSuccessHandler" />
+	</bean>
+	
+	<bean id="authenticationSuccessHandler"
+		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
+		<property name="defaultTargetUrl" value="/hola.html" />
 	</bean>
 
 </beans>
