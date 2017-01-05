@@ -1,5 +1,6 @@
 package secu;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -165,7 +166,8 @@ public class DistributableSessionRegistryImpl implements SessionRegistry, Applic
 		if (clusterOptions == null) {
 			jChannel = new JChannel();
 		} else {
-			jChannel = new JChannel(Thread.currentThread().getContextClassLoader().getResource(clusterOptions));
+			InputStream in = Thread.currentThread().getContextClassLoader().getResource(clusterOptions).openStream();
+			jChannel = new JChannel(in);
 
 		}
 
