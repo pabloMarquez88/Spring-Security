@@ -1,0 +1,1 @@
+-Djgroups.bind_addr=server1  -Djgroups.tcpping.initial_hosts=server1[7800],server2[7800] -Djava.net.preferIPv4Stack=true
