@@ -44,7 +44,7 @@ public class DistributableSessionRegistryImpl implements SessionRegistry, Applic
 	@SuppressWarnings("unchecked")
 	private Map sessionIds = new HashMap(); // <sessionId:Object,DistributableSessionInformation>
 	private String channelName = "security-cluster-patagonia";
-	private String clusterOptions = "/udp.xml";//"/udp.xml";// null;
+	private String clusterOptions = "/tcp.xml";//"/udp.xml";// null;
 	private boolean distributable = true;// false;
 	// private int timeout = 5000;
 	private int timeout = 0;
